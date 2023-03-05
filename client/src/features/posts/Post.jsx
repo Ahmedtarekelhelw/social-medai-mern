@@ -13,15 +13,15 @@ import {
 } from "react-share";
 
 // My Components
-import FlexBetween from "./FlexBetween";
+import FlexBetween from "../../components/FlexBetween";
 
 // Api
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
 
 //Context
-import { useFriendsContext } from "../context/FriendsContext";
-import { useModeContext } from "../context/DarkmodeContext";
-import { usePostContext } from "../context/PostContext";
+import { useFriendsContext } from "../../context/FriendsContext";
+import { useModeContext } from "../../context/DarkmodeContext";
+import { usePostContext } from "../../context/PostContext";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -29,9 +29,9 @@ import {
   addUserFriends,
   removeUserFriends,
   setFriends,
-} from "../features/users/usersSlice";
-import { users } from "../features/users/usersSlice";
-import { deletePost } from "../features/posts/postsSlice";
+} from "../users/usersSlice";
+import { users } from "../users/usersSlice";
+import { deletePost } from "./postsSlice";
 
 // MUI Components
 import {
@@ -210,7 +210,7 @@ const Post = ({ post, profile }) => {
               backgroundColor: palette.primary.light,
             }}
           >
-            {friendsIds.includes(post.userId) ? (
+            {friendsIds?.includes(post.userId) ? (
               <PersonRemoveAlt1OutlinedIcon
                 sx={{ color: palette.primary.dark }}
               />

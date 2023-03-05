@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 // My Components
-import FlexBetween from "./FlexBetween";
+import FlexBetween from "../../components/FlexBetween";
 
 // Api
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addPost,
-  endLoading,
-  startLoading,
-  updatePost,
-} from "../features/posts/postsSlice";
+import { addPost, endLoading, startLoading, updatePost } from "./postsSlice";
 
 // MUI Components
 import {
@@ -30,8 +25,8 @@ import {
 // Material Icons
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import { usePostContext } from "../context/PostContext";
-import { users } from "../features/users/usersSlice";
+import { usePostContext } from "../../context/PostContext";
+import { users } from "../users/usersSlice";
 
 const Share = () => {
   const { user } = useSelector(users);
@@ -148,6 +143,7 @@ const Share = () => {
           <input
             type="file"
             style={{ display: "none" }}
+            // hidden
             id="file"
             onChange={(e) => {
               setPicPath("");

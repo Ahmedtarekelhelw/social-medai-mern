@@ -1,9 +1,14 @@
 import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
-import AuthForm from "../components/AuthForm";
+import AuthForm from "../features/auth/AuthForm";
+import ResetForm from "../components/resetForm/ResetForm";
+import { useState } from "react";
 
 const Auth = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery("(max-width: 1000px)");
+  const [isReset, setIsReset] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   return (
     <Stack mb={2}>
       <Box
@@ -21,7 +26,22 @@ const Auth = () => {
         >
           Welcome to Sociality
         </Typography>
-        <AuthForm />
+        <Typography mb={2} color="error" variant="h4">
+          {errorMsg && errorMsg}
+        </Typography>
+        {isReset ? (
+          <ResetForm
+            setIsReset={setIsReset}
+            errorMsg={errorMsg}
+            setErrorMsg={setErrorMsg}
+          />
+        ) : (
+          <AuthForm
+            setIsReset={setIsReset}
+            errorMsg={errorMsg}
+            setErrorMsg={setErrorMsg}
+          />
+        )}
       </Box>
     </Stack>
   );

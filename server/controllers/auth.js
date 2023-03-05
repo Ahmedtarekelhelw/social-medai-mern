@@ -2,6 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
+import nodemailer from "nodemailer";
+import generateMail from "../helper.js";
 
 export const generateAccessToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: "1h" });
@@ -92,19 +94,43 @@ export const createResetPassword = async (req, res) => {
   const { email } = req.query;
   try {
     const user = await User.findOne({ email });
+
+    // Check if the user is already exist
     if (!user) return res.status(404).json({ msg: "This User Not Register" });
+
+    // generate otp code and save it in local variable
     req.app.locals.OTP = otpGenerator.generate(6, {
       lowerCaseAlphabets: false,
       upperCaseAlphabets: false,
       specialChars: false,
     });
+
+    // save email in local variable to use it in resetPassword route
     req.app.locals.userEmail = email;
 
-    // hndle send mail to gmail with otp code
-    return res.status(200).json({
-      msg: "Checked Your Email To reset Your Password",
-      code: req.app.locals.OTP,
-    });
+    // handle send mail to gmail with otp code
+    let config = {
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASS,
+      },
+    };
+
+    let transporter = nodemailer.createTransport(config);
+
+    const message = generateMail(user, email, req.app.locals.OTP);
+
+    transporter
+      .sendMail(message)
+      .then(() => {
+        return res.status(201).json({
+          msg: "you should receive an email",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({ msg: error.message });
+      });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
@@ -116,12 +142,12 @@ export const verifyOtp = (req, res) => {
   if (parseInt(OTP) === parseInt(code)) {
     req.app.locals.OTP = null; // reset the OTP value
     req.app.locals.resetPassword = true; // start session for reset password
-    return res.status(201).send({
+    return res.status(201).json({
       msg: "Verify Successsfully!",
       flag: req.app.locals.resetPassword,
     });
   }
-  return res.status(400).send({ error: "Invalid OTP" });
+  return res.status(400).json({ msg: "Invalid Code" });
 };
 
 export const resetPassword = async (req, res) => {

@@ -2,17 +2,17 @@ import { Fragment } from "react";
 
 // My Components
 import FriendInfo from "./FriendInfo";
-import FriendInfoSkeleton from "./FriendInfoSkeleton";
+import FriendInfoSkeleton from "../../components/skeleton/FriendInfoSkeleton";
 
 // MUI Components
 import { Stack, Typography, useTheme } from "@mui/material";
 
 //Context
-import { useFriendsContext } from "../context/FriendsContext";
+import { useFriendsContext } from "../../context/FriendsContext";
 
 // Redux
 import { useSelector } from "react-redux";
-import { users } from "../features/users/usersSlice";
+import { users } from "./usersSlice";
 
 const FriendsList = ({ profile }) => {
   const { palette } = useTheme();

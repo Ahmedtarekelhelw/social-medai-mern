@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 
 // My Components
-import SuspenseSkeleton from "./components/SuspenseSkeleton";
+import SuspenseSkeleton from "./components/skeleton/SuspenseSkeleton";
 
 // Redux
 import { useSelector } from "react-redux";
@@ -37,7 +37,6 @@ const Search = lazy(() => import("./pages/Search"));
 
 const ProtectRoute = ({ children }) => {
   const { user } = useSelector(users);
-
   const location = useLocation();
   if (!user) return <Navigate to="/auth" state={{ from: location }} replace />;
   return children;
@@ -92,6 +91,7 @@ const router = createBrowserRouter(
           </ProtectRoute>
         }
       />
+
       <Route
         path="auth"
         element={
@@ -107,7 +107,6 @@ const router = createBrowserRouter(
 );
 
 const App = () => {
-  // const mode = useSelector((state) => state.auth.mode);
   const { mode } = useModeContext();
 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);

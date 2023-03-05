@@ -3,7 +3,7 @@ import FriendInfo from "./FriendInfo";
 
 // Redux
 import { useSelector } from "react-redux";
-import { users } from "../features/users/usersSlice";
+import { users } from "./usersSlice";
 
 // MUI Components
 import { Stack, useTheme } from "@mui/material";

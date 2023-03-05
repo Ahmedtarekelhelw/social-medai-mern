@@ -1,22 +1,17 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
 
 // My Components
-import FlexBetween from "./FlexBetween";
+import FlexBetween from "../../components/FlexBetween";
 
 // Api
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
 
 //Context
-import { useFriendsContext } from "../context/FriendsContext";
+import { useFriendsContext } from "../../context/FriendsContext";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import {
-  removeUserFriends,
-  setFriends,
-  users,
-} from "../features/users/usersSlice";
+import { removeUserFriends, setFriends, users } from "./usersSlice";
 
 // MUI Components
 import {

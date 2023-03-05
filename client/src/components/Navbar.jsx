@@ -52,7 +52,7 @@ const Navbar = () => {
     <FlexBetween
       padding="1rem 6%"
       backgroundColor={alt}
-      justifyContent={pathname === "/auth" && "center !important"}
+      justifyContent={pathname.includes("/auth") && "center !important"}
       position="sticky"
       top="0"
       zIndex="99"
@@ -69,12 +69,12 @@ const Navbar = () => {
               cursor: "pointer",
             },
           }}
-          onClick={() => pathname !== "/auth" && navigate("/")}
+          onClick={() => !pathname.includes("/auth") && navigate("/")}
         >
           Sociality
         </Typography>
 
-        {isNonMobile && pathname !== "/auth" && (
+        {isNonMobile && !pathname.includes("/auth") && (
           <form onSubmit={handleSearch}>
             <FlexBetween
               backgroundColor={neutralLight}
@@ -96,7 +96,7 @@ const Navbar = () => {
       </FlexBetween>
 
       {/* Desktop Nav */}
-      {pathname !== "/auth" &&
+      {!pathname.includes("/auth") &&
         (isNonMobile ? (
           <RightMenuNav
             isMobileToggleMenu={isMobileToggleMenu}
@@ -110,7 +110,7 @@ const Navbar = () => {
           </IconButton>
         ))}
 
-      {!isNonMobile && isMobileToggleMenu && pathname !== "/auth" && (
+      {!isNonMobile && isMobileToggleMenu && !pathname.includes("/auth") && (
         <Box
           position="fixed"
           right="0"

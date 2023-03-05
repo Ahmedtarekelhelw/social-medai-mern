@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // My Components
-import UserInfoSkeleton from "./UserInfoSkeleton";
-import FlexBetween from "./FlexBetween";
+import UserInfoSkeleton from "../../components/skeleton/UserInfoSkeleton";
+import FlexBetween from "../../components/FlexBetween";
 
 // Api
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
 
 //Redux
 import { useSelector } from "react-redux";
-import { users } from "../features/users/usersSlice";
+import { users } from "./usersSlice";
 
 // MUI Components
 import {

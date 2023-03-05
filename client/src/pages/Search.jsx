@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import FilterMenu from "../components/FilterMenu";
-import Posts from "../components/Posts";
-import UsersSearch from "../components/UsersSearch";
+import Posts from "../features/posts/Posts";
+import UsersSearch from "../features/users/UsersSearch";
 
 const Search = () => {
   const [searchParams] = useSearchParams();

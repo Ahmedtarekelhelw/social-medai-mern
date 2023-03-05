@@ -2,15 +2,15 @@ import { Fragment, useEffect, useState } from "react";
 
 // My Components
 import SearchUsersList from "./SearchUsersList";
-import SearchUsersListSkeleton from "./SearchUsersListSkeleton";
+import SearchUsersListSkeleton from "../../components/skeleton/SearchUsersListSkeleton";
 
 // Api
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import { endLoading, posts, startLoading } from "../features/posts/postsSlice";
-import { setSearchUser, users } from "../features/users/usersSlice";
+import { endLoading, posts, startLoading } from "../posts/postsSlice";
+import { setSearchUser, users } from "./usersSlice";
 
 // MUI Components
 import { Stack, Typography, useTheme } from "@mui/material";

@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 
 // My Components
-import PostSkeleton from "./PostSkeleton";
+import PostSkeleton from "../../components/skeleton/PostSkeleton";
 import Post from "./Post";
 
 // Api
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import {
-  endLoading,
-  setPosts,
-  startLoading,
-} from "../features/posts/postsSlice";
-import { posts as reduxPosts } from "../features/posts/postsSlice";
+import { endLoading, setPosts, startLoading } from "./postsSlice";
+import { posts as reduxPosts } from "./postsSlice";
 
 // MUI Components
 import { Box, Stack, Typography, useTheme } from "@mui/material";

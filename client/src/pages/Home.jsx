@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 // My Components
-import Share from "../components/Share";
-import Posts from "../components/Posts";
-import UserInfo from "../components/UserInfo";
-import FriendsList from "../components/FriendsList";
+import Share from "../features/posts/Share";
+import Posts from "../features/posts/Posts";
+import UserInfo from "../features/users/UserInfo";
+import FriendsList from "../features/users/FriendsList";
 
 // MUI Components
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
