@@ -14,7 +14,6 @@ const LoginForm = ({
   isLogin,
 }) => {
   const { palette } = useTheme();
-  console.log(isLogin);
   return (
     <Form>
       <Box mb={2}>

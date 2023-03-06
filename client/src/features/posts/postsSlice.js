@@ -53,6 +53,7 @@ export const {
   setPosts,
   updatePost,
   deletePost,
+  likePost,
   startLoading,
   endLoading,
 } = postSlice.actions;

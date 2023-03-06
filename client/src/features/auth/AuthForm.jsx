@@ -30,8 +30,9 @@ const AuthForm = ({ setIsReset, setErrorMsg }) => {
   const [isLogin, setIsLogin] = useState(true);
 
   const login = async (values) => {
+    const { email, password } = values;
     try {
-      const res = await axiosInstance.post("auth/login", values);
+      const res = await axiosInstance.post("auth/login", { email, password });
       dispatch(setLogin({ user: res.data.user, token: res.data.accessToken }));
       setErrorMsg("");
       navigate(from.pathname);

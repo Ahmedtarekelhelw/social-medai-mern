@@ -56,6 +56,7 @@ const Posts = ({ url, profile, params }) => {
         dispatch(endLoading());
       }
     };
+
     getPosts();
   }, [dispatch, profile, params, url]); //eslint-disable-line
 
@@ -74,7 +75,7 @@ const Posts = ({ url, profile, params }) => {
       setLoadingMore(false);
     };
     if (page !== 1) getMorePosts();
-  }, [dispatch, profile, page]); //eslint-disable-line
+  }, [profile, page]); //eslint-disable-line
 
   return (
     <Stack spacing={2}>

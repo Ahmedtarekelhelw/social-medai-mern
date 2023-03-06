@@ -31,7 +31,7 @@ import {
   setFriends,
 } from "../users/usersSlice";
 import { users } from "../users/usersSlice";
-import { deletePost } from "./postsSlice";
+import { deletePost, likePost, updatePost } from "./postsSlice";
 
 // MUI Components
 import {
@@ -58,11 +58,11 @@ import EditIcon from "@mui/icons-material/Edit";
 const Post = ({ post, profile }) => {
   const dispatch = useDispatch();
   const { palette } = useTheme();
-  const [like, setIsLike] = useState(false);
   const {
     user: { friends, _id },
   } = useSelector(users);
   const { mode } = useModeContext();
+  const [like, setIsLike] = useState(post.likes.hasOwnProperty(_id));
   const { user } = useSelector(users);
   const [open, setOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
@@ -118,6 +118,16 @@ const Post = ({ post, profile }) => {
     setPicPath(post.picturePath);
     setOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleLike = async () => {
+    try {
+      const res = await axiosInstance.patch(`posts/${post._id}/like`);
+      dispatch(updatePost({ post: res.data }));
+      setIsLike(res.data.likes.hasOwnProperty(_id));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -242,13 +252,15 @@ const Post = ({ post, profile }) => {
       {/* Footer */}
       <FlexBetween>
         <Stack direction="row" spacing={1}>
+          {/* Like  */}
           <FlexBetween>
-            <IconButton onClick={() => setIsLike(!like)}>
+            <IconButton onClick={handleLike}>
               {like ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
             </IconButton>
-            <Typography>3</Typography>
+            <Typography>{Object.keys(post.likes).length}</Typography>
           </FlexBetween>
 
+          {/* Comment */}
           <FlexBetween>
             <IconButton>
               <ChatBubbleOutlineIcon />
@@ -257,6 +269,7 @@ const Post = ({ post, profile }) => {
           </FlexBetween>
         </Stack>
 
+        {/* Share  */}
         <Box position="relative">
           <IconButton onClick={() => setShareOpen(!shareOpen)}>
             <ShareIcon />
@@ -280,7 +293,6 @@ const Post = ({ post, profile }) => {
               hashtag="#Sociality"
               style={{ display: "flex" }}
             >
-                
               <TwitterIcon size={32} round />
             </TwitterShareButton>
 

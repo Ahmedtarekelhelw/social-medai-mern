@@ -17,7 +17,7 @@ import CodeForm from "./CodeForm";
 import EmailFrom from "./EmailFrom";
 import PasswordForm from "./PasswordForm";
 
-const ResetForm = ({ setIsReset, errorMsg, setErrorMsg }) => {
+const ResetForm = ({ setIsReset, setErrorMsg }) => {
   const [step, setStep] = useState(1);
 
   const SendMail = async (values) => {

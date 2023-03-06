@@ -30,17 +30,9 @@ const Auth = () => {
           {errorMsg && errorMsg}
         </Typography>
         {isReset ? (
-          <ResetForm
-            setIsReset={setIsReset}
-            errorMsg={errorMsg}
-            setErrorMsg={setErrorMsg}
-          />
+          <ResetForm setIsReset={setIsReset} setErrorMsg={setErrorMsg} />
         ) : (
-          <AuthForm
-            setIsReset={setIsReset}
-            errorMsg={errorMsg}
-            setErrorMsg={setErrorMsg}
-          />
+          <AuthForm setIsReset={setIsReset} setErrorMsg={setErrorMsg} />
         )}
       </Box>
     </Stack>
