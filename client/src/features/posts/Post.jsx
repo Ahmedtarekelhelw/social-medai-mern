@@ -1,16 +1,6 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import {
-  TwitterShareButton,
-  FacebookShareButton,
-  LinkedinShareButton,
-  TelegramShareButton,
-  TelegramIcon,
-  TwitterIcon,
-  FacebookIcon,
-  LinkedinIcon,
-} from "react-share";
 
 // My Components
 import FlexBetween from "../../components/FlexBetween";
@@ -29,9 +19,9 @@ import {
   addUserFriends,
   removeUserFriends,
   setFriends,
+  users,
 } from "../users/usersSlice";
-import { users } from "../users/usersSlice";
-import { deletePost, likePost, updatePost } from "./postsSlice";
+import { deletePost, updatePost } from "./postsSlice";
 
 // MUI Components
 import {
@@ -54,6 +44,14 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import ShareMenuSkeleton from "../../components/skeleton/ShareMenuSkeleton";
+import CommentsSkeleton from "../../components/skeleton/CommentsSkeleton";
+
+// import Comments from "../../components/Comments";
+// import ShareMenu from "../../components/ShareMenu";
+
+const Comments = React.lazy(() => import("../../components/Comments"));
+const ShareMenu = React.lazy(() => import("../../components/ShareMenu"));
 
 const Post = ({ post, profile }) => {
   const dispatch = useDispatch();
@@ -66,6 +64,7 @@ const Post = ({ post, profile }) => {
   const { user } = useSelector(users);
   const [open, setOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [openComment, setOpenComment] = useState(false);
 
   const { friendsIds, setFriendsIds, setAddFriendLoading } =
     useFriendsContext();
@@ -74,19 +73,21 @@ const Post = ({ post, profile }) => {
 
   const handleFriend = async () => {
     try {
-      if (friendsIds.includes(post.userId)) {
+      if (friendsIds.includes(post.userId._id)) {
         if (profile) {
           dispatch(removeUserFriends(_id));
         } else {
-          dispatch(removeUserFriends(post.userId));
+          dispatch(removeUserFriends(post.userId._id));
         }
-        setFriendsIds(friends.filter((friendId) => friendId !== post.userId));
+        setFriendsIds(
+          friends.filter((friendId) => friendId !== post.userId._id)
+        );
       } else {
         setAddFriendLoading(true);
-        setFriendsIds([...friendsIds, post.userId]);
+        setFriendsIds([...friendsIds, post.userId._id]);
       }
-      const res = await axiosInstance.patch(`users/${_id}/${post.userId}`);
-      if (!friendsIds.includes(post.userId)) {
+      const res = await axiosInstance.patch(`users/${_id}/${post.userId._id}`);
+      if (!friendsIds.includes(post.userId._id)) {
         profile
           ? dispatch(addUserFriends(user))
           : dispatch(addUserFriends(res.data));
@@ -120,11 +121,12 @@ const Post = ({ post, profile }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // issue withe return post from backend need to return populate to catch userId._id
   const handleLike = async () => {
     try {
       const res = await axiosInstance.patch(`posts/${post._id}/like`);
       dispatch(updatePost({ post: res.data }));
-      setIsLike(res.data.likes.hasOwnProperty(_id));
+      setIsLike(res.data.likes[_id]);
     } catch (error) {
       console.log(error);
     }
@@ -141,20 +143,20 @@ const Post = ({ post, profile }) => {
       {/* Head */}
       <FlexBetween>
         <Link
-          to={`/profile/${post.userId}`}
+          to={`/profile/${post.userId._id}`}
           style={{ color: "inherit", textDecoration: "none" }}
         >
           <Stack direction="row" spacing={1}>
-            <Avatar alt={post.userId} src={post.userPicturePath} />
+            <Avatar src={post.userId.picturePath} alt={post.userId._id} />
             <Box>
               <Typography variant="h5" fontWeight="500">
-                {post.firstName} {post.lastName}
+                {post.userId.firstName} {post.userId.lastName}
               </Typography>
               <Typography>{moment(post.createdAt).fromNow()}</Typography>
             </Box>
           </Stack>
         </Link>
-        {post.userId === _id && (
+        {post.userId._id === _id && (
           <Box position={"relative"}>
             <IconButton onClick={() => setOpen(!open)}>
               <MoreHorizIcon />
@@ -213,14 +215,14 @@ const Post = ({ post, profile }) => {
             )}
           </Box>
         )}
-        {_id !== post.userId && (
+        {_id !== post.userId._id && (
           <IconButton
             onClick={handleFriend}
             sx={{
               backgroundColor: palette.primary.light,
             }}
           >
-            {friendsIds?.includes(post.userId) ? (
+            {friendsIds?.includes(post.userId._id) ? (
               <PersonRemoveAlt1OutlinedIcon
                 sx={{ color: palette.primary.dark }}
               />
@@ -262,10 +264,10 @@ const Post = ({ post, profile }) => {
 
           {/* Comment */}
           <FlexBetween>
-            <IconButton>
+            <IconButton onClick={() => setOpenComment(!openComment)}>
               <ChatBubbleOutlineIcon />
             </IconButton>
-            <Typography>3</Typography>
+            <Typography>{post.comments.length}</Typography>
           </FlexBetween>
         </Stack>
 
@@ -274,60 +276,19 @@ const Post = ({ post, profile }) => {
           <IconButton onClick={() => setShareOpen(!shareOpen)}>
             <ShareIcon />
           </IconButton>
-          <Stack
-            position="absolute"
-            display={shareOpen ? "flex" : "none"}
-            direction="row"
-            bottom={"100%"}
-            right={0}
-            zIndex={3}
-            backgroundColor={palette.background.alt}
-            boxShadow={4}
-            borderRadius={2}
-            p={1}
-            gap={1}
-          >
-            <TwitterShareButton
-              url={`http://localhost:3000/profile/${post.userId}`}
-              quote={`${post.description}`}
-              hashtag="#Sociality"
-              style={{ display: "flex" }}
-            >
-              <TwitterIcon size={32} round />
-            </TwitterShareButton>
-
-            <FacebookShareButton
-              style={{ display: "flex" }}
-              url={`http://localhost:3000/profile/${post.userId}`}
-              quote={`${post.description}`}
-              hashtag="#Sociality"
-            >
-                
-              <FacebookIcon size={32} round />
-            </FacebookShareButton>
-
-            <LinkedinShareButton
-              style={{ display: "flex" }}
-              url={`http://localhost:3000/profile/${post.userId}`}
-              quote={`${post.description}`}
-              hashtag="#Sociality"
-            >
-                
-              <LinkedinIcon size={32} round />
-            </LinkedinShareButton>
-
-            <TelegramShareButton
-              style={{ display: "flex" }}
-              url={`http://localhost:3000/profile/${post.userId}`}
-              quote={`${post.description}`}
-              hashtag="#Sociality"
-            >
-                
-              <TelegramIcon size={32} round />
-            </TelegramShareButton>
-          </Stack>
+          {shareOpen && (
+            <Suspense fallback={<ShareMenuSkeleton />}>
+              <ShareMenu post={post} />
+            </Suspense>
+          )}
         </Box>
       </FlexBetween>
+
+      {openComment && (
+        <Suspense fallback={<CommentsSkeleton />}>
+          <Comments comments={post.comments} postId={post._id} />
+        </Suspense>
+      )}
     </Stack>
   );
 };

@@ -61,25 +61,28 @@ const Share = () => {
       dispatch(startLoading());
       if (img) return await upload();
 
-      const res = post
-        ? await axiosInstance.patch(`posts/${post._id}`, {
-            desc,
-            picPath,
-          })
-        : await axiosInstance.post("posts", {
-            userId: user._id,
-            description: desc,
-          });
-
-      post
-        ? dispatch(updatePost({ post: res.data }))
-        : dispatch(addPost({ post: res.data }));
-
-      setSharePostLoad(false);
-      dispatch(endLoading());
-      setPicPath("");
-      setPost(null);
-      setDesc("");
+      try {
+        const res = post
+          ? await axiosInstance.patch(`posts/${post._id}`, {
+              desc,
+              picPath,
+            })
+          : await axiosInstance.post("posts", {
+              description: desc,
+            });
+        post
+          ? dispatch(updatePost({ post: res.data }))
+          : dispatch(addPost({ post: res.data }));
+        setSharePostLoad(false);
+        dispatch(endLoading());
+        setPicPath("");
+        setPost(null);
+        setDesc("");
+      } catch (error) {
+        console.log(error);
+        setSharePostLoad(false);
+        dispatch(endLoading());
+      }
     }
   };
 
@@ -91,7 +94,6 @@ const Share = () => {
             picPath: img ? sharedPicPath : picPath,
           })
         : await axiosInstance.post("posts", {
-            userId: user._id,
             description: desc,
             picturePath: sharedPicPath,
           });
@@ -142,8 +144,7 @@ const Share = () => {
         <FlexBetween gap={1}>
           <input
             type="file"
-            style={{ display: "none" }}
-            // hidden
+            hidden
             id="file"
             onChange={(e) => {
               setPicPath("");
@@ -187,7 +188,7 @@ const Share = () => {
             }}
             sx={{ position: "absolute", top: 0, right: 0 }}
           >
-            <HighlightOffIcon />
+            <HighlightOffIcon sx={{ color: "#fff" }} />
           </IconButton>
           <img
             src={picPath ? picPath : URL.createObjectURL(img)}

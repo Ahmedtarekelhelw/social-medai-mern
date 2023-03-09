@@ -22,9 +22,6 @@ const UserInfoSkeleton = ({ profile }) => {
       <Divider />
       <Skeleton variant="text" width={200} sx={{ fontSize: "0.8rem" }} />
       <Skeleton variant="text" width={200} sx={{ fontSize: "0.8rem" }} />
-      <Divider />
-      <Skeleton variant="text" width={200} sx={{ fontSize: "0.8rem" }} />
-      <Skeleton variant="text" width={200} sx={{ fontSize: "0.8rem" }} />
     </Stack>
   );
 };

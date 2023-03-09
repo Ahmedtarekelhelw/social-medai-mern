@@ -1,26 +1,24 @@
-import User from "../models/User.js";
 import Post from "../models/Post.js";
 
 export const createPost = async (req, res) => {
-  const { userId, description, picturePath } = req.body;
+  const { description, picturePath } = req.body;
+  const userId = req.user;
   try {
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ msg: "User not found" });
-
     const newPost = await Post.create({
       userId,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      location: user.location,
       description,
-      userPicturePath: user.picturePath,
       picturePath,
       likes: {},
     });
 
     if (!newPost) return res.status(404).json({ msg: "Invalid post" });
 
-    res.status(201).json(newPost);
+    const postInfo = await newPost.populate(
+      "userId",
+      "firstName lastName picturePath"
+    );
+
+    res.status(201).json(postInfo);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
@@ -37,7 +35,10 @@ export const getFeedPosts = async (req, res) => {
     const posts = await Post.find()
       .sort({ _id: -1 })
       .limit(Limit)
-      .skip(startIndex);
+      .skip(startIndex)
+      .populate("comments.postedBy", "_id firstName lastName picturePath")
+      .populate("userId", "firstName lastName picturePath");
+
     res.status(200).json({ posts, hasMore });
   } catch (err) {
     res.status(500).json({ msg: err.message });
@@ -56,7 +57,9 @@ export const getUserPosts = async (req, res) => {
     const posts = await Post.find({ userId })
       .sort({ _id: -1 })
       .limit(Limit)
-      .skip(startIndex);
+      .skip(startIndex)
+      .populate("comments.postedBy", "firstName lastName picturePath")
+      .populate("userId", "firstName lastName picturePath");
 
     res.status(200).json({ posts, hasMore });
   } catch (err) {
@@ -69,23 +72,6 @@ export const deletePost = async (req, res) => {
   try {
     await Post.findByIdAndDelete(id);
     res.status(200).json({ msg: "Post has been deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ msg: err.message });
-  }
-};
-
-export const updatePost = async (req, res) => {
-  const { id } = req.params;
-  const { desc, picPath } = req.body;
-  try {
-    const updatedPost = await Post.findByIdAndUpdate(
-      id,
-      { description: desc, picturePath: picPath },
-      {
-        new: true,
-      }
-    );
-    res.status(200).json(updatedPost);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
@@ -107,13 +93,34 @@ export const getPostsBySearch = async (req, res) => {
     })
       .sort({ _id: -1 })
       .limit(Limit)
-      .skip(startIndex);
+      .skip(startIndex)
+      .populate("comments.postedBy", "_id firstName lastName picturePath")
+      .populate("userId", "firstName lastName picturePath");
     const total = CountedPost;
     const hasMore = Page < Math.ceil(total / Limit);
 
     res.status(200).json({ posts, hasMore });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
+  }
+};
+
+export const updatePost = async (req, res) => {
+  const { id } = req.params;
+  const { desc, picPath } = req.body;
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { description: desc, picturePath: picPath },
+      {
+        new: true,
+      }
+    )
+      .populate("comments.postedBy", "_id firstName lastName picturePath")
+      .populate("userId", "firstName lastName picturePath");
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
   }
 };
 
@@ -133,7 +140,32 @@ export const likePost = async (req, res) => {
       id,
       { likes: post.likes },
       { new: true }
-    );
+    )
+      .populate("comments.postedBy", "_id firstName lastName picturePath")
+      .populate("userId", "firstName lastName picturePath");
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const commentPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { comment } = req.body;
+    const userId = req.user;
+    const post = await Post.findById(id);
+
+    post.comments.push({ text: comment, postedBy: userId });
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { comments: post.comments },
+      { new: true }
+    )
+      .populate("userId", "firstName lastName picturePath")
+      .populate("comments.postedBy", "_id firstName lastName picturePath");
 
     res.status(200).json(updatedPost);
   } catch (err) {

@@ -16,6 +16,7 @@ export const ModeContextProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("mode", JSON.stringify(mode));
   }, [mode]);
+
   return (
     <modeContext.Provider
       value={{

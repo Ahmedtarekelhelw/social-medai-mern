@@ -117,6 +117,7 @@ const Settings = () => {
       width={mobile ? "95%" : "65%"}
       padding="20px"
       borderRadius="10px"
+      boxShadow={2}
       backgroundColor={palette.background.alt}
     >
       <Typography variant="h3">Settings</Typography>

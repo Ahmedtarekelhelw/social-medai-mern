@@ -7,21 +7,23 @@ import { users } from "./usersSlice";
 
 // MUI Components
 import { Stack, useTheme } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const SearchUsersList = () => {
   const { palette } = useTheme();
   const { searchUsers } = useSelector(users);
 
   return searchUsers.map((user) => (
-    <Stack
-      key={user._id}
-      backgroundColor={palette.background.alt}
-      spacing={2}
-      p={2}
-      borderRadius={2}
-    >
-      <FriendInfo friend={user} />
-    </Stack>
+    <Link to={`/profile/${user._id}`} key={user._id}>
+      <Stack
+        backgroundColor={palette.background.alt}
+        spacing={2}
+        p={2}
+        borderRadius={2}
+      >
+        <FriendInfo friend={user} />
+      </Stack>
+    </Link>
   ));
 };
 

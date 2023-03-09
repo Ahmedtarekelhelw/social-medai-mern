@@ -7,6 +7,7 @@ import {
   deletePost,
   updatePost,
   getPostsBySearch,
+  commentPost,
 } from "../controllers/post.js";
 import { verifyToken } from "../middleware/auth.js";
 
@@ -23,6 +24,7 @@ router.get("/:userId", verifyToken, getUserPosts);
 // UPDATE
 router.patch("/:id/like", verifyToken, likePost);
 router.patch("/:id", verifyToken, updatePost);
+router.patch("/:id/comment",verifyToken ,commentPost);
 
 //DELETE
 router.delete("/:id", verifyToken, deletePost);

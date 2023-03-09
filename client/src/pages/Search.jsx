@@ -16,9 +16,11 @@ const Search = () => {
 
   const URL = selectedIndex === 0 ? `posts/search` : `users/search`;
 
+  console.log("search render");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
+
   return (
     <Grid container gap={2} mt={2} px={tablet ? 2 : 4} justifyContent="center">
       <Grid item xs={12} md={4}>

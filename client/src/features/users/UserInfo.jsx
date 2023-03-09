@@ -101,23 +101,6 @@ const UserInfo = ({ profile, userId }) => {
           <Typography color={medium}>{info.occupation}</Typography>
         </FlexBetween>
       </Box>
-
-      <Divider />
-
-      <Box pt={2}>
-        <FlexBetween gap={1} pb={1}>
-          <Typography color={medium}>Who's viewed your profile</Typography>
-          <Typography color={main} fontWeight="500">
-            {info.viewedProfile || 1200}
-          </Typography>
-        </FlexBetween>
-        <FlexBetween gap={1}>
-          <Typography color={medium}>Impressions of your post</Typography>
-          <Typography color={main} fontWeight="500">
-            {info.impressions || 200}
-          </Typography>
-        </FlexBetween>
-      </Box>
     </ButtonBase>
   );
 };

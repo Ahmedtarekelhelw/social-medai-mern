@@ -1,6 +1,7 @@
 import Mailgen from "mailgen";
+import jwt from "jsonwebtoken";
 
-const generateMail = (user, email, otp) => {
+export const generateMail = (user, email, otp) => {
   let MailGenerator = new Mailgen({
     theme: "default",
     product: {
@@ -39,4 +40,6 @@ const generateMail = (user, email, otp) => {
   return message;
 };
 
-export default generateMail;
+export const generateAccessToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: "1h" });
+};

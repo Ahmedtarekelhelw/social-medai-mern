@@ -73,7 +73,7 @@ const FriendInfo = ({ friend, profile }) => {
             />
           </IconButton>
         )
-      ) : (
+      ) : friend._id !== _id ? (
         <IconButton
           onClick={handleFriend}
           sx={{
@@ -82,7 +82,7 @@ const FriendInfo = ({ friend, profile }) => {
         >
           <PersonRemoveAlt1OutlinedIcon sx={{ color: palette.primary.dark }} />
         </IconButton>
-      )}
+      ) : null}
     </FlexBetween>
   );
 };

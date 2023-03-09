@@ -47,6 +47,7 @@ export const initialValues = {
   occupation: "",
   picture: "",
 };
+
 export const resetInitialValues = {
   email: "",
   code: "",

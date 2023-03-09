@@ -5,27 +5,20 @@ const PostSchema = new mongoose.Schema(
     userId: {
       type: String,
       required: true,
+      ref: "User",
     },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      required: true,
-    },
-    location: String,
-    description: String,
+    description: { type: String, required: true },
     picturePath: String,
-    userPicturePath: String,
     likes: {
       type: Map,
       of: Boolean,
     },
-    comments: {
-      type: Array,
-      default: [],
-    },
+    comments: [
+      {
+        text: String,
+        postedBy: { type: String, ref: "User" },
+      },
+    ],
   },
   { timestamps: true }
 );

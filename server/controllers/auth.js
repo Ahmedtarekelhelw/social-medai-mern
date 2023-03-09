@@ -3,11 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
 import nodemailer from "nodemailer";
-import generateMail from "../helper.js";
-
-export const generateAccessToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: "1h" });
-};
+import { generateMail, generateAccessToken } from "../helper.js";
 
 export const register = async (req, res) => {
   try {

@@ -7,3 +7,16 @@ body,
   width: 100%;
   font-family: "Rubik", sans-serif;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* This is because Select Menau in RightMenunav component
+ to prevent the scrollbar disapear when open select menu
+*/
+body {
+  overflow-y: auto !important;
+  padding-right: 0 !important;
+}

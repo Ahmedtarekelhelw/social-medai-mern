@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { generateAccessToken } from "./auth.js";
+import { generateAccessToken } from "../helper.js";
 
 export const refreshToken = async (req, res) => {
   const cookies = req.cookies;
