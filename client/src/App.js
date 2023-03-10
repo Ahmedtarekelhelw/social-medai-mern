@@ -34,6 +34,7 @@ const Auth = lazy(() => import("./pages/Auth"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Search = lazy(() => import("./pages/Search"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const ProtectRoute = ({ children }) => {
   const { user } = useSelector(users);
@@ -100,6 +101,15 @@ const router = createBrowserRouter(
               <Auth />
             </Suspense>
           </ProtectAuth>
+        }
+      />
+
+      <Route
+        path="*"
+        element={
+          <Suspense fallback={<SuspenseSkeleton />}>
+            <NotFound />
+          </Suspense>
         }
       />
     </Route>
