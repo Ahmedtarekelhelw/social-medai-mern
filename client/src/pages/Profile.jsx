@@ -8,7 +8,7 @@ import UserInfo from "../features/users/UserInfo";
 import FriendsList from "../features/users/FriendsList";
 
 // MUI Components
-import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 // Custom Hooks
 import useGetFriends from "../hooks/useGetFriends";
@@ -16,13 +16,14 @@ import useGetFriends from "../hooks/useGetFriends";
 // Redux
 import { useSelector } from "react-redux";
 import { users } from "../features/users/usersSlice";
+import FlexBetween from "../components/FlexBetween";
 
 const Profile = () => {
   const theme = useTheme();
   const { pathname } = useLocation();
 
   const { id } = useParams();
-  const { getFriends } = useGetFriends(id);
+  const { getFriends, error } = useGetFriends(id);
 
   const { user } = useSelector(users);
   const tablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -35,6 +36,17 @@ const Profile = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
+
+  if (error)
+    return (
+      <FlexBetween
+        height="calc(100vh - 80px)"
+        justifyContent="center !important"
+      >
+        <Typography variant="h4">There is Something Wrong :(</Typography>
+      </FlexBetween>
+    );
+
   return (
     <Grid container gap={2} mt={2} px={tablet ? 2 : 4} justifyContent="center">
       <Grid

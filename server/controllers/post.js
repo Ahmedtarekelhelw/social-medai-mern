@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Post from "../models/Post.js";
 
 export const createPost = async (req, res) => {
@@ -52,6 +53,8 @@ export const getUserPosts = async (req, res) => {
   const startIndex = (Page - 1) * Limit;
   try {
     const { userId } = req.params;
+    if (!mongoose.isValidObjectId(userId))
+      return res.status(404).json({ msg: "There is Something wrong" });
     const total = await Post.find({ userId }).countDocuments();
     const hasMore = Page < Math.ceil(total / Limit);
     const posts = await Post.find({ userId })

@@ -5,8 +5,10 @@ import {
   setUserFriends,
   startLoadFriends,
 } from "../features/users/usersSlice";
+import { useState } from "react";
 const useGetFriends = (id) => {
   const dispatch = useDispatch();
+  const [error, setError] = useState(false);
 
   const getFriends = async () => {
     try {
@@ -15,13 +17,14 @@ const useGetFriends = (id) => {
       dispatch(setUserFriends(res.data));
       dispatch(endLoadFriends());
     } catch (error) {
-      console.log(error);
+      setError(true);
       dispatch(endLoadFriends());
     }
   };
 
   return {
     getFriends,
+    error,
   };
 };
 

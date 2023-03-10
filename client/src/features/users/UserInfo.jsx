@@ -31,6 +31,7 @@ const UserInfo = ({ profile, userId }) => {
   const navigate = useNavigate();
   const { palette } = useTheme();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [user, setUser] = useState({});
 
   const { user: currentUser, friends } = useSelector(users);
@@ -44,15 +45,20 @@ const UserInfo = ({ profile, userId }) => {
   useEffect(() => {
     const getUser = async () => {
       setLoading(true);
-
-      const res = await axiosInstance.get(`users/${userId}`);
-      setUser({ ...res.data });
-      setLoading(false);
+      try {
+        const res = await axiosInstance.get(`users/${userId}`);
+        setUser({ ...res.data });
+        setLoading(false);
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+      }
     };
     if (profile) getUser();
   }, [userId, profile]);
 
   if (loading) return <UserInfoSkeleton profile />;
+  if (error) return;
 
   return (
     <ButtonBase

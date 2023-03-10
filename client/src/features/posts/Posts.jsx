@@ -19,6 +19,7 @@ const Posts = ({ url, profile, params }) => {
   const { palette } = useTheme();
   const { posts, loading } = useSelector(reduxPosts);
   const [page, setPage] = useState(1);
+
   const [hasMore, setHasMore] = useState(false);
   const dispatch = useDispatch();
   const [loadingMore, setLoadingMore] = useState(false);
@@ -52,7 +53,6 @@ const Posts = ({ url, profile, params }) => {
         );
         dispatch(endLoading());
       } catch (error) {
-        console.log(error);
         dispatch(endLoading());
       }
     };
