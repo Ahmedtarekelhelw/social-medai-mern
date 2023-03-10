@@ -37,6 +37,10 @@ app.use(
 
 const port = process.env.PORT || 8000;
 
+app.get("/", (req, res) => {
+  res.status(200).json({ msg: "Hello To Social Api" });
+});
+
 // Routes With Files
 app.post("/upload", async (req, res) => {
   try {
