@@ -38,7 +38,7 @@ app.use(
 const port = process.env.PORT || 8000;
 
 app.get("/", (req, res) => {
-  res.status(200).json({ msg: "Hello To Social Api" });
+  res.json({ msg: "Hello To Social Api" });
 });
 
 // Routes With Files
