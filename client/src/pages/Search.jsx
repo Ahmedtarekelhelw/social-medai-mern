@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
+
+// MUi
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
+
+// My Compoents
 import FilterMenu from "../components/FilterMenu";
+
+// redux
 import Posts from "../features/posts/Posts";
 import UsersSearch from "../features/users/UsersSearch";
 
@@ -11,12 +17,20 @@ const Search = () => {
   const { pathname } = useLocation();
   const { breakpoints } = useTheme();
 
+  /* 
+  l do this beacuse if i pass object directly to Posts or UsersSearch compoents  as props
+  this cause unnecessary rerender to Posts or UsersSearch 
+   when change dark or light mode and make another request
+   */
+  const params = useMemo(() => {
+    return { searchQuery: searchQuery };
+  }, [searchQuery]);
+
   const tablet = useMediaQuery(breakpoints.down("md"));
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const URL = selectedIndex === 0 ? `posts/search` : `users/search`;
 
-  console.log("search render");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
@@ -31,9 +45,9 @@ const Search = () => {
       </Grid>
       <Grid item xs={12} md={7} mb={2}>
         {selectedIndex === 0 ? (
-          <Posts url={URL} params={{ searchQuery }} />
+          <Posts url={URL} params={params} />
         ) : (
-          <UsersSearch url={URL} params={{ searchQuery }} />
+          <UsersSearch url={URL} params={params} />
         )}
       </Grid>
     </Grid>

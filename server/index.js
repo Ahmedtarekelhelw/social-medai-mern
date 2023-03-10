@@ -4,10 +4,11 @@ import cloudinary from "./cloudinary.js";
 
 //Middleware
 import dotenv from "dotenv";
-import helmet from "helmet";
-import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
+// Custom middleWare
+import { verifyToken } from "./middleware/auth.js";
 
 //Routes
 import authRoutes from "./routes/auth.js";
@@ -24,9 +25,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cookieParser());
-app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use(morgan("common"));
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
@@ -54,12 +52,11 @@ app.post("/upload", async (req, res) => {
 
 //Routes
 app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/posts", postRoutes);
+app.use("/users", verifyToken, userRoutes);
+app.use("/posts", verifyToken, postRoutes);
 app.use("/refresh", refreshRoute);
 
 // mogoose setup
-// mongoose.set("strictQuery", true);
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
