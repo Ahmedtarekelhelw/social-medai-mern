@@ -2,14 +2,16 @@ import axios from "axios";
 import store from "./store";
 import { setLogout, setToken } from "./features/auth/authSlice";
 
+const BASE_URL = "https://social-medai-mern-b696.vercel.app/";
+
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000/",
+  baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
 
 export const axiosPublic = axios.create({
-  baseURL: "http://localhost:8000/",
+  baseURL: BASE_URL,
 });
 
 axiosInstance.interceptors.request.use((req) => {

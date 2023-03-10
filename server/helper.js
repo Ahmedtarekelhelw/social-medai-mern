@@ -1,5 +1,8 @@
 import Mailgen from "mailgen";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const generateMail = (user, email, otp) => {
   let MailGenerator = new Mailgen({
