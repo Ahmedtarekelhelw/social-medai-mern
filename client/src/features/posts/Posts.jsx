@@ -45,7 +45,7 @@ const Posts = ({ url, profile, params }) => {
       const clientHeight = document.documentElement.clientHeight;
       setScrollHeight(scrollHeight);
       setScrollTop(scrollTop + clientHeight);
-      if (scrollTop + clientHeight + 56 >= scrollHeight && hasMore) {
+      if (scrollTop + clientHeight + 65 >= scrollHeight && hasMore) {
         setLoadingMore(true);
         setPage(page + 1);
       }
