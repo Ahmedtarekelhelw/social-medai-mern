@@ -23,6 +23,8 @@ const Posts = ({ url, profile, params }) => {
   const [hasMore, setHasMore] = useState(false);
   const dispatch = useDispatch();
   const [loadingMore, setLoadingMore] = useState(false);
+  const [scrollheight, setScrollHeight] = useState(0);
+  const [scrolltop, setScrollTop] = useState(0);
 
   // Watch Scrolling If reach to bottom
   useEffect(() => {
@@ -41,11 +43,14 @@ const Posts = ({ url, profile, params }) => {
       const scrollTop = document.documentElement.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight;
       const clientHeight = document.documentElement.clientHeight;
+      setScrollHeight(scrollHeight);
+      setScrollTop(scrollTop + clientHeight);
       if (scrollTop + clientHeight + 56 >= scrollHeight && hasMore) {
         setLoadingMore(true);
         setPage(page + 1);
       }
     };
+
     window.addEventListener("touchmove", OnTouch);
     window.addEventListener("scroll", onScroll);
     return () => {
@@ -94,6 +99,19 @@ const Posts = ({ url, profile, params }) => {
 
   return (
     <Stack spacing={2}>
+      <Box
+        position="fixed"
+        top="0"
+        width="100px"
+        height="100px"
+        backgroundColor="red"
+        color="white"
+        zIndex="669999"
+      >
+        <Typography>
+          {scrollheight} {scrolltop}
+        </Typography>
+      </Box>
       {loading ? (
         Array(5)
           .fill(<PostSkeleton />)
