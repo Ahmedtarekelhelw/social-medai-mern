@@ -3,7 +3,7 @@ import store from "./store";
 import { setLogout, setToken } from "./features/auth/authSlice";
 
 // const BASE_URL = "http://localhost:8000/";
-const BASE_URL = "https://social-medai/-mern-b696.vercel.app/";
+const BASE_URL = "https://social-medai-mern-b696.vercel.app/";
 
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
