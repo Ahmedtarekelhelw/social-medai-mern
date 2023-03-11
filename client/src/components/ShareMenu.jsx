@@ -30,41 +30,35 @@ const ShareMenu = ({ post }) => {
       gap={1}
     >
       <TwitterShareButton
-        url={`http://localhost:3000/profile/${post.userId._id}`}
+        url={`https://social-medai-mern-cqsh.vercel.app/profile/${post.userId._id}`}
         quote={`${post.description}`}
         hashtag="#Sociality"
         style={{ display: "flex" }}
       >
         <TwitterIcon size={32} round />
       </TwitterShareButton>
-
       <FacebookShareButton
         style={{ display: "flex" }}
-        url={`http://localhost:3000/profile/${post.userId._id}`}
+        url={`https://social-medai-mern-cqsh.vercel.app/profile/${post.userId._id}`}
         quote={`${post.description}`}
         hashtag="#Sociality"
       >
-          
         <FacebookIcon size={32} round />
       </FacebookShareButton>
-
       <LinkedinShareButton
         style={{ display: "flex" }}
-        url={`http://localhost:3000/profile/${post.userId._id}`}
+        url={`https://social-medai-mern-cqsh.vercel.app/profile/${post.userId._id}`}
         quote={`${post.description}`}
         hashtag="#Sociality"
       >
-          
         <LinkedinIcon size={32} round />
       </LinkedinShareButton>
-
       <TelegramShareButton
         style={{ display: "flex" }}
-        url={`http://localhost:3000/profile/${post.userId._id}`}
+        url={`https://social-medai-mern-cqsh.vercel.app/profile/${post.userId._id}`}
         quote={`${post.description}`}
         hashtag="#Sociality"
       >
-          
         <TelegramIcon size={32} round />
       </TelegramShareButton>
     </Stack>

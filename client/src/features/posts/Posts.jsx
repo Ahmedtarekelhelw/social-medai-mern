@@ -35,8 +35,23 @@ const Posts = ({ url, profile, params }) => {
         setPage(page + 1);
       }
     };
+
+    // this to target scroll on mobile view
+    const OnTouch = () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      if (scrollTop + clientHeight + 56 >= scrollHeight && hasMore) {
+        setLoadingMore(true);
+        setPage(page + 1);
+      }
+    };
+    window.addEventListener("touchmove", OnTouch);
     window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("touchmove", OnTouch);
+    };
   }, [page, hasMore]);
 
   // To Get Posts On Every Page
