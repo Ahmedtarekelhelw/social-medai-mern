@@ -68,6 +68,8 @@ const Post = ({ post, profile }) => {
   const { setPost, setDesc, setPicPath } = usePostContext();
 
   let like = Boolean(post.likes[_id]);
+  let isMyPost = post.userId._id === _id;
+
   const handleFriend = async () => {
     try {
       if (friendsIds.includes(post.userId._id)) {
@@ -151,7 +153,7 @@ const Post = ({ post, profile }) => {
             </Box>
           </Stack>
         </Link>
-        {post.userId._id === _id && (
+        {isMyPost && (
           <Box position={"relative"}>
             <IconButton onClick={() => setOpen(!open)}>
               <MoreHorizIcon />
@@ -210,7 +212,7 @@ const Post = ({ post, profile }) => {
             )}
           </Box>
         )}
-        {_id !== post.userId._id && (
+        {!isMyPost && (
           <IconButton
             onClick={handleFriend}
             sx={{

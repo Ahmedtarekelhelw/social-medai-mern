@@ -1,5 +1,5 @@
 //Context
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 // Redux
 import { useSelector } from "react-redux";
@@ -10,9 +10,14 @@ const FriendsContext = createContext();
 export const FriendsContextProvider = ({ children }) => {
   const { user } = useSelector(users);
 
-  const [friendsIds, setFriendsIds] = useState(
-    user?.friends?.length === 0 ? [] : user?.friends
-  );
+  const [friendsIds, setFriendsIds] = useState(user?.friends || []);
+
+  useEffect(() => {
+    if (user?.friends) {
+      setFriendsIds(user?.friends);
+    }
+  }, [user?.friends]);
+
   const [addFriendLoading, setAddFriendLoading] = useState(false);
   return (
     <FriendsContext.Provider
