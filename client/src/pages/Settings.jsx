@@ -148,6 +148,7 @@ const Settings = () => {
         <TextField
           placeholder="File"
           type="file"
+          inputProps={{ accept: "image/png, image/jpeg" }}
           label="File"
           id="file"
           name="File"

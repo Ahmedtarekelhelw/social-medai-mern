@@ -13,7 +13,9 @@ import { endLoading, setPosts, startLoading } from "./postsSlice";
 import { posts as reduxPosts } from "./postsSlice";
 
 // MUI Components
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Stack, Typography, useTheme, Collapse } from "@mui/material";
+
+import { TransitionGroup } from "react-transition-group";
 
 const Posts = ({ url, profile, params }) => {
   const { palette } = useTheme();
@@ -101,7 +103,16 @@ const Posts = ({ url, profile, params }) => {
           .fill(<PostSkeleton />)
           .map((item, i) => <Box key={i}>{item}</Box>)
       ) : posts.length > 0 ? (
-        posts?.map((p) => <Post key={p._id} post={p} profile={profile} />)
+        <TransitionGroup>
+          {posts?.map((p) => (
+            <Collapse
+              key={p._id}
+              sx={{ "&:not(&:last-child)": { marginBottom: "16px" } }}
+            >
+              <Post key={p._id} post={p} profile={profile} />
+            </Collapse>
+          ))}
+        </TransitionGroup>
       ) : (
         <Box
           padding="20px"

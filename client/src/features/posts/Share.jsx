@@ -5,9 +5,13 @@ import FlexBetween from "../../components/FlexBetween";
 // Api
 import axiosInstance from "../../axiosInstance";
 
+// Context
+import { usePostContext } from "../../context/PostContext";
+
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import { addPost, endLoading, startLoading, updatePost } from "./postsSlice";
+import { users } from "../users/usersSlice";
 
 // MUI Components
 import {
@@ -25,8 +29,6 @@ import {
 // Material Icons
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import { usePostContext } from "../../context/PostContext";
-import { users } from "../users/usersSlice";
 
 const Share = () => {
   const { user } = useSelector(users);
@@ -145,6 +147,7 @@ const Share = () => {
           <input
             type="file"
             hidden
+            accept="image/png, image/jpeg"
             id="file"
             onChange={(e) => {
               setPicPath("");

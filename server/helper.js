@@ -9,7 +9,7 @@ export const generateMail = (user, email, otp) => {
     theme: "default",
     product: {
       name: "Sociality",
-      link: "https://mailgen.js/", // this replace with site l deployed on it
+      link: "https://social-medai-mern-cqsh.vercel.app",
     },
   });
 

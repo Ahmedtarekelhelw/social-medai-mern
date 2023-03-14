@@ -13,6 +13,7 @@ import {
   useMediaQuery,
   useTheme,
   Box,
+  Slide,
 } from "@mui/material";
 
 // Material Icons
@@ -111,34 +112,41 @@ const Navbar = () => {
         ))}
 
       {!isNonMobile && isMobileToggleMenu && !pathname.includes("/auth") && (
-        <Box
-          position="fixed"
-          right="0"
-          bottom="0"
-          height="100%"
-          zIndex="10"
-          maxWidth="500px"
-          minWidth="250px"
-          backgroundColor={background}
+        <Slide
+          direction="left"
+          in={isMobileToggleMenu}
+          mountOnEnter
+          unmountOnExit
         >
-          {/* CLOSE ICON */}
-          <Box display="flex" justifyContent="flex-end" p="1rem">
-            <IconButton
-              onClick={() => setIsMobileToggleMenu(!isMobileToggleMenu)}
-            >
-              <Close />
-            </IconButton>
-          </Box>
+          <Box
+            position="fixed"
+            right="0"
+            bottom="0"
+            height="100%"
+            zIndex="10"
+            maxWidth="500px"
+            minWidth="250px"
+            backgroundColor={background}
+          >
+            {/* CLOSE ICON */}
+            <Box display="flex" justifyContent="flex-end" p="1rem">
+              <IconButton
+                onClick={() => setIsMobileToggleMenu(!isMobileToggleMenu)}
+              >
+                <Close />
+              </IconButton>
+            </Box>
 
-          {/* MENU ITEMS */}
-          {
-            <RightMenuNav
-              mobile
-              isMobileToggleMenu={isMobileToggleMenu}
-              setIsMobileToggleMenu={setIsMobileToggleMenu}
-            />
-          }
-        </Box>
+            {/* MENU ITEMS */}
+            {
+              <RightMenuNav
+                mobile
+                isMobileToggleMenu={isMobileToggleMenu}
+                setIsMobileToggleMenu={setIsMobileToggleMenu}
+              />
+            }
+          </Box>
+        </Slide>
       )}
     </FlexBetween>
   );

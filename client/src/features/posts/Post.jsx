@@ -47,9 +47,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import ShareMenuSkeleton from "../../components/skeleton/ShareMenuSkeleton";
 import CommentsSkeleton from "../../components/skeleton/CommentsSkeleton";
 
-// import Comments from "../../components/Comments";
-// import ShareMenu from "../../components/ShareMenu";
-
 const Comments = React.lazy(() => import("../../components/Comments"));
 const ShareMenu = React.lazy(() => import("../../components/ShareMenu"));
 
@@ -60,7 +57,6 @@ const Post = ({ post, profile }) => {
     user: { friends, _id },
   } = useSelector(users);
   const { mode } = useModeContext();
-  const [like, setIsLike] = useState(post.likes.hasOwnProperty(_id));
   const { user } = useSelector(users);
   const [open, setOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
@@ -71,6 +67,7 @@ const Post = ({ post, profile }) => {
 
   const { setPost, setDesc, setPicPath } = usePostContext();
 
+  let like = Boolean(post.likes[_id]);
   const handleFriend = async () => {
     try {
       if (friendsIds.includes(post.userId._id)) {
@@ -121,12 +118,10 @@ const Post = ({ post, profile }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // issue withe return post from backend need to return populate to catch userId._id
   const handleLike = async () => {
     try {
       const res = await axiosInstance.patch(`posts/${post._id}/like`);
       dispatch(updatePost({ post: res.data }));
-      setIsLike(res.data.likes[_id]);
     } catch (error) {
       console.log(error);
     }
