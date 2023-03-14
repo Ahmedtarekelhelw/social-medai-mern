@@ -1,6 +1,5 @@
 import { Button, TextField, useTheme } from "@mui/material";
 import { ErrorMessage, Field, Form } from "formik";
-import React from "react";
 import InputError from "../InputError";
 
 const EmailFrom = ({ isValid, isSubmitting }) => {
