@@ -19,6 +19,7 @@ const LoginForm = ({
   setErrorMsg,
   resetForm,
   isLogin,
+  loading,
 }) => {
   const { palette } = useTheme();
   const mobile = useMediaQuery("(max-width:500px)");
@@ -50,7 +51,7 @@ const LoginForm = ({
       <Button
         type="submit"
         fullWidth
-        disabled={!isValid || isSubmitting}
+        disabled={!isValid || isSubmitting || loading}
         sx={{
           p: "0.6rem",
           my: "20px ",

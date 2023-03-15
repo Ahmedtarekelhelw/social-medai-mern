@@ -19,6 +19,7 @@ const RegisterForm = ({
   setErrorMsg,
   resetForm,
   isLogin,
+  loading,
 }) => {
   const { palette } = useTheme();
   return (
@@ -71,6 +72,7 @@ const RegisterForm = ({
           setErrorMsg={setErrorMsg}
           resetForm={resetForm}
           isLogin={isLogin}
+          loading={loading}
         />
       </Grid>
     </Grid>

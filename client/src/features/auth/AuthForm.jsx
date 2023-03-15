@@ -26,6 +26,7 @@ const AuthForm = ({ setIsReset, setErrorMsg }) => {
   } = useLocation();
   const [formData, setFormData] = useState();
   const [picPath, setPicPath] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [isLogin, setIsLogin] = useState(true);
 
@@ -59,7 +60,10 @@ const AuthForm = ({ setIsReset, setErrorMsg }) => {
   const register = async (values) => {
     const { picture, ...others } = values;
     setFormData(others);
-    if (values.picture) return await upload(values.picture);
+    if (values.picture) {
+      setLoading(true);
+      return await upload(values.picture);
+    }
     try {
       await axiosInstance.post("auth/register", values);
       setErrorMsg("");
@@ -78,8 +82,10 @@ const AuthForm = ({ setIsReset, setErrorMsg }) => {
         });
         setErrorMsg("");
         setIsLogin(true);
+        setLoading(false);
       } catch (err) {
         setErrorMsg(err.response.data.msg);
+        setLoading(false);
       }
     };
     if (picPath) {
@@ -87,7 +93,7 @@ const AuthForm = ({ setIsReset, setErrorMsg }) => {
     }
   }, [picPath]); // eslint-disable-line
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
+  const handleFormSubmit = async (values) => {
     if (isLogin) return await login(values);
     await register(values);
   };
@@ -131,6 +137,7 @@ const AuthForm = ({ setIsReset, setErrorMsg }) => {
             setErrorMsg={setErrorMsg}
             resetForm={resetForm}
             isLogin={isLogin}
+            loading={loading}
           />
         );
       }}
